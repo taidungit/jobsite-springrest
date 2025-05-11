@@ -3,7 +3,10 @@ package vn.dungmount.jobsite.controller;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,8 +14,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.exc.InvalidTypeIdException;
+
 import vn.dungmount.jobsite.domain.User;
 import vn.dungmount.jobsite.service.UserService;
+import vn.dungmount.jobsite.service.error.IdInvalidException;
 
 @RestController
 public class UserController {
@@ -21,34 +27,40 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/user/create")
-    public User createUser(@RequestBody User user){
+    @PostMapping("/users")
+    public ResponseEntity<User> createUser(@RequestBody User user){
 
-        return this.userService.createUser(user);
+        User taidung= this.userService.createUser(user);
+        return ResponseEntity.status(HttpStatus.CREATED).body(taidung);
         
     }
 
-    @DeleteMapping("/user/{id}")
-    public String deleteUser(@PathVariable("id") Long id){
+    @DeleteMapping("/users/{id}")
+    public ResponseEntity<String> deleteUser(@PathVariable("id") Long id) throws IdInvalidException{
+        if(id>=1500){
+            throw new IdInvalidException("Id khong duoc lon qua 1500");
+        }
          this.userService.deleteUser(id);
-        return "Delete successfully";
+        // return ResponseEntity.status(HttpStatus.OK).body(null);
+        return ResponseEntity.ok("delete successfully");
     }
 
     
-    @GetMapping("/user/{id}")
-    public User getUserById(@PathVariable("id") Long id){
-       return this.userService.getUserById(id); 
+    @GetMapping("/users/{id}")
+    public ResponseEntity<User> getUserById(@PathVariable("id") Long id){
+       User taidung= this.userService.getUserById(id);
+       return ResponseEntity.ok(taidung); 
     }
     @GetMapping("/users")
-    public List<User> getAllUser(){
+    public ResponseEntity<List<User>> getAllUser(){
          List<User> users=this.userService.getAllUsers();
-        return users;
+        return ResponseEntity.ok(users);
     }
     
-    @PutMapping("/user")
-    public User updateUser(@RequestBody User user){
+    @PutMapping("/users")
+    public ResponseEntity<User> updateUser(@RequestBody User user){
         User update=this.userService.updateUser(user);
-        return update;
+        return ResponseEntity.ok(update);
         
     }
 }
