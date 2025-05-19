@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.databind.exc.InvalidTypeIdException;
 
 import vn.dungmount.jobsite.domain.User;
 import vn.dungmount.jobsite.service.UserService;
@@ -23,13 +23,17 @@ import vn.dungmount.jobsite.service.error.IdInvalidException;
 @RestController
 public class UserController {
     private final UserService userService;
-    public UserController(UserService userService) {
+    private final PasswordEncoder passwordEncoder;
+ 
+    public UserController(UserService userService,PasswordEncoder passwordEncoder) {
         this.userService = userService;
+        this.passwordEncoder=passwordEncoder;
     }
 
     @PostMapping("/users")
     public ResponseEntity<User> createUser(@RequestBody User user){
-
+        String hashPassword=passwordEncoder.encode(user.getPassword());
+        user.setPassword(hashPassword);
         User taidung= this.userService.createUser(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(taidung);
         
