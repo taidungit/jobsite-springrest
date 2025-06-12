@@ -1,7 +1,11 @@
 package vn.dungmount.jobsite.domain.dto;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class LoginDTO {
+    @NotBlank(message="Dont't have username")
     private String username;
+    @NotBlank(message ="Don't have password")
     private String password;
     public String getUsername() {
         return username;

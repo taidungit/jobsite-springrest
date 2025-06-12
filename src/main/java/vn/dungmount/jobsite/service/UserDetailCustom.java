@@ -21,6 +21,9 @@ private final UserService userService;
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
       vn.dungmount.jobsite.domain.User user=this.userService.getUserByEmail(username);
+       if (user == null) {
+            throw new UsernameNotFoundException("Username/password không hợp lệ");
+        }
        return new User(
         user.getEmail(),
         user.getPassword(),

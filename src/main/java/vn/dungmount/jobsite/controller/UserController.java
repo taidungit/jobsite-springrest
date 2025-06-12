@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import vn.dungmount.jobsite.domain.User;
 import vn.dungmount.jobsite.service.UserService;
-import vn.dungmount.jobsite.service.error.IdInvalidException;
+import vn.dungmount.jobsite.util.error.IdInvalidException;
 
 @RestController
 public class UserController {
