@@ -29,18 +29,26 @@ public class GlobalException {
             res.setMessage("Exception occures....");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
     }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<RestResponse<Object>> validationError(MethodArgumentNotValidException ex) {
-        BindingResult result = ex.getBindingResult();
-        final List<FieldError> fieldErrors = result.getFieldErrors();
+public ResponseEntity<RestResponse<Object>> handleValidationError(MethodArgumentNotValidException ex) {
+    BindingResult result = ex.getBindingResult();
+    List<FieldError> fieldErrors = result.getFieldErrors();
 
-        RestResponse<Object> res = new RestResponse<Object>();
-        res.setStatusCode(HttpStatus.BAD_REQUEST.value());
-        res.setError(ex.getBody().getDetail());
+    RestResponse<Object> res = new RestResponse<>();
+    res.setStatusCode(HttpStatus.BAD_REQUEST.value());
+    res.setError("Validation error");
 
-        List<String> errors = fieldErrors.stream().map(f -> f.getDefaultMessage()).collect(Collectors.toList());
-        res.setMessage(errors.size() > 1 ? errors : errors.get(0));
+    // Lấy tất cả lỗi hoặc lỗi đầu tiên
+    List<String> messages = fieldErrors.stream()
+        .map(FieldError::getDefaultMessage)
+        .collect(Collectors.toList());
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
-    }
+    // Nếu chỉ có 1 lỗi thì trả về chuỗi, còn nhiều thì trả về danh sách
+    res.setMessage(messages.size() == 1 ? messages.get(0) : messages);
+
+    return ResponseEntity.badRequest().body(res);
 }
+
+}
+
