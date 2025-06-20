@@ -3,9 +3,13 @@ package vn.dungmount.jobsite.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import vn.dungmount.jobsite.domain.Company;
+import vn.dungmount.jobsite.domain.dto.Meta;
+import vn.dungmount.jobsite.domain.dto.ResultPaginationDTO;
 import vn.dungmount.jobsite.repository.CompanyRepository;
 
 @Service
@@ -25,8 +29,17 @@ public class CompanyService {
     public Company createCompany(Company company) {
       return this.companyRepository.save(company);
     }
-    public List<Company>getAllCompanies(){
-      return this.companyRepository.findAll();
+    public ResultPaginationDTO getAllCompanies(Pageable page){
+      Page<Company>pageCompany=this.companyRepository.findAll(page);
+      Meta mt=new Meta();
+      ResultPaginationDTO rs=new ResultPaginationDTO();
+        mt.setPage(pageCompany.getNumber());
+        mt.setPageSize(pageCompany.getSize());
+        mt.setPages(pageCompany.getTotalPages());
+        mt.setTotal(pageCompany.getTotalElements());
+        rs.setMeta(mt);
+        rs.setResult(pageCompany.getContent());
+        return rs;
     }
     public Company updateCompany(Company company){
       Company update=this.getCompanyById(company.getId());
