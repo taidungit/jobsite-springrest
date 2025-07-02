@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,10 +19,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.turkraft.springfilter.boot.Filter;
 
+import jakarta.validation.Valid;
 import vn.dungmount.jobsite.domain.User;
+import vn.dungmount.jobsite.domain.dto.ResCreateUserDTO;
+import vn.dungmount.jobsite.domain.dto.ResUpdateUserDTO;
+import vn.dungmount.jobsite.domain.dto.ResUserDTO;
 import vn.dungmount.jobsite.domain.dto.ResultPaginationDTO;
 import vn.dungmount.jobsite.service.UserService;
+import vn.dungmount.jobsite.util.annotation.ApiMessage;
 import vn.dungmount.jobsite.util.error.IdInvalidException;
 
 @RestController
@@ -35,46 +42,60 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public ResponseEntity<User> createUser(@RequestBody User user){
+    public ResponseEntity<ResCreateUserDTO> createUser(@Valid @RequestBody User user) throws IdInvalidException{
+        boolean isEmailExist=this.userService.isEmailExist(user.getEmail());
+        if(isEmailExist){ throw new IdInvalidException(
+            "Email "+user.getEmail()+" đã tồn tại. Vui lòng nhập email khác!"
+        );
+    }
         String hashPassword=passwordEncoder.encode(user.getPassword());
         user.setPassword(hashPassword);
         User taidung= this.userService.createUser(user);
-        return ResponseEntity.status(HttpStatus.CREATED).body(taidung);
+        return ResponseEntity.status(HttpStatus.CREATED).body(this.userService.convertResCreateUserDTO(taidung));
         
     }
 
     @DeleteMapping("/users/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable("id") Long id) throws IdInvalidException{
-        if(id>=1500){
-            throw new IdInvalidException("Id khong duoc lon qua 1500");
+    @ApiMessage("Delete user")
+    public ResponseEntity<Void> deleteUser(@PathVariable("id") Long id) throws IdInvalidException{
+       User user= this.userService.getUserById(id);
+        if(user==null){
+            throw new IdInvalidException("User không tồn tại!");
         }
          this.userService.deleteUser(id);
         // return ResponseEntity.status(HttpStatus.OK).body(null);
-        return ResponseEntity.ok("delete successfully");
+        return ResponseEntity.ok(null);
     }
 
     
     @GetMapping("/users/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable("id") Long id){
+    @ApiMessage("fetch user ")
+    public ResponseEntity<ResUserDTO> getUserById(@PathVariable("id") Long id) throws IdInvalidException{
+         User user= this.userService.getUserById(id);
+        if(user==null){
+            throw new IdInvalidException("User không tồn tại!");
+        }
        User taidung= this.userService.getUserById(id);
-       return ResponseEntity.ok(taidung); 
+       return ResponseEntity.ok(this.userService.convResUserDTO(taidung)); 
     }
     @GetMapping("/users")
-    public ResponseEntity<ResultPaginationDTO> getAllUser(  @RequestParam("current") Optional<String> currentOptional,
-        @RequestParam("pageSize") Optional<String> pageSizeOptional){
-        String sCurrent=currentOptional.isPresent()?currentOptional.get():"";
-        String sPageSize=pageSizeOptional.isPresent()?pageSizeOptional.get():"";
-        int current=Integer.parseInt(sCurrent);
-        int pageSize=Integer.parseInt(sPageSize);
-        Pageable pageable = PageRequest.of(current-1,pageSize);    
-        ResultPaginationDTO users=this.userService.getAllUsers(pageable);
+    @ApiMessage("Fetch all users")
+    public ResponseEntity<ResultPaginationDTO> getAllUser(  @Filter Specification<User> spec,Pageable pageable){
+           
+        ResultPaginationDTO users=this.userService.getAllUsers(spec,pageable);
         return ResponseEntity.ok(users);
     }
     
     @PutMapping("/users")
-    public ResponseEntity<User> updateUser(@RequestBody User user){
+    @ApiMessage("Update user")
+    public ResponseEntity<ResUpdateUserDTO> updateUser(@RequestBody User user)throws IdInvalidException{
+        User user1= this.userService.getUserById(user.getId());
+        if(user1==null){
+            throw new IdInvalidException("User không tồn tại!");
+        }
         User update=this.userService.updateUser(user);
-        return ResponseEntity.ok(update);
+
+        return ResponseEntity.ok(this.userService.convertResUpdateUserDTO(update));
         
     }
 }

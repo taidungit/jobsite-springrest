@@ -1,0 +1,19 @@
+package vn.dungmount.jobsite.domain.dto;
+
+import java.time.Instant;
+
+
+import lombok.Getter;
+import lombok.Setter;
+import vn.dungmount.jobsite.util.constant.EnumGender;
+@Getter
+@Setter
+public class ResCreateUserDTO {
+    private Long id;
+    private String name;
+    private String email;
+    int age;
+    private EnumGender gender;
+    private String address;
+    private Instant createdAt;
+}
