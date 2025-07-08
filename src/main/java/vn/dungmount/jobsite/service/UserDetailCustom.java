@@ -20,7 +20,7 @@ private final UserService userService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-      vn.dungmount.jobsite.domain.User user=this.userService.getUserByEmail(username);
+      vn.dungmount.jobsite.domain.User user=this.userService.getUserByEmail(username);//email đây chính là username
        if (user == null) {
             throw new UsernameNotFoundException("Username/password không hợp lệ");
         }

@@ -32,6 +32,8 @@ public class CompanyController {
 
     @PostMapping("/companies")
     public ResponseEntity<Company> createCompany( @RequestBody @Valid Company company){
+        System.out.println("tretsasd");
+
         Company taidung= this.companyService.createCompany(company);
         return ResponseEntity.status(HttpStatus.CREATED).body(taidung);
         
