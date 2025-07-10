@@ -43,7 +43,7 @@ public class SecurityConfiguration {
         .cors(Customizer.withDefaults())
         .authorizeHttpRequests(
                         authz -> authz
-                                .requestMatchers("/","/auth/login").permitAll()
+                                .requestMatchers("/","/auth/login","/auth/refresh").permitAll()
                                 
                                 .anyRequest().authenticated())
                 .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults())

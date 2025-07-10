@@ -10,5 +10,6 @@ import vn.dungmount.jobsite.domain.User;
 public interface UserRepository extends JpaRepository<User,Long>,JpaSpecificationExecutor<User> {
     User findByEmail(String Email);
     boolean existsByEmail(String Email);
+    User findByRefreshTokenAndEmail(String token,String email);
 
 }
