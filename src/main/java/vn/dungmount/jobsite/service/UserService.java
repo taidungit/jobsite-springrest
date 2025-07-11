@@ -55,8 +55,9 @@ public class UserService {
                 item.getAge(),
                 item.getGender(),
                 item.getAddress(),
-                item.getUpdatedAt(),
-                item.getCreatedAt()))
+                item.getCreatedAt(),
+                item.getUpdatedAt()
+                ))
             .collect(Collectors.toList());
 
         rs.setResult(listUser);
