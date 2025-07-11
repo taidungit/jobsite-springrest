@@ -77,8 +77,7 @@ public class UserController {
         if(user==null){
             throw new IdInvalidException("User không tồn tại!");
         }
-       User taidung= this.userService.getUserById(id);
-       return ResponseEntity.ok(this.userService.convResUserDTO(taidung)); 
+       return ResponseEntity.ok(this.userService.convResUserDTO(user)); 
     }
     @GetMapping("/users")
     @ApiMessage("Fetch all users")

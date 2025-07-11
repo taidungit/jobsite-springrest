@@ -10,16 +10,20 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import vn.dungmount.jobsite.domain.Company;
+import vn.dungmount.jobsite.domain.User;
 import vn.dungmount.jobsite.domain.response.ResUserDTO;
 import vn.dungmount.jobsite.domain.response.ResultPaginationDTO;
 import vn.dungmount.jobsite.repository.CompanyRepository;
+import vn.dungmount.jobsite.repository.UserRepository;
 
 @Service
 public class CompanyService {
         private final CompanyRepository companyRepository;
+        private final UserRepository userRepository;
 
-    public CompanyService(CompanyRepository companyRepository) {
-        this.companyRepository = companyRepository;
+    public CompanyService(CompanyRepository companyRepository, UserRepository userRepository) {
+      this.companyRepository = companyRepository;
+      this.userRepository = userRepository;
     }
     public Company getCompanyById(Long id){
       Optional<Company> optional=this.companyRepository.findById(id);
@@ -56,6 +60,12 @@ public class CompanyService {
       return update;
     }
     public void deleteCompany(Long id){
+      Optional<Company>optional=this.companyRepository.findById(id);
+      if(optional.isPresent()){
+        Company com=optional.get();
+        List<User> users=this.userRepository.findAllByCompany(com);
+        this.userRepository.deleteAll(users);
+      }
       this.companyRepository.deleteById(id);
     }
 

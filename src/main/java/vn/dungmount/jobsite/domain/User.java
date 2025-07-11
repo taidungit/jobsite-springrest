@@ -10,6 +10,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
@@ -24,8 +26,13 @@ import vn.dungmount.jobsite.util.constant.EnumGender;
 @Getter
 @Setter
 public class User {
-      @Id 
-      @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @ManyToOne
+    @JoinColumn(name="company_id")
+    private Company company; 
+
+    @Id 
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+   
     private Long id;
     private String name;
     @NotBlank(message = "Không được để trống email")
