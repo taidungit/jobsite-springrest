@@ -24,10 +24,10 @@ import com.turkraft.springfilter.boot.Filter;
 
 import jakarta.validation.Valid;
 import vn.dungmount.jobsite.domain.User;
-import vn.dungmount.jobsite.domain.dto.ResCreateUserDTO;
-import vn.dungmount.jobsite.domain.dto.ResUpdateUserDTO;
-import vn.dungmount.jobsite.domain.dto.ResUserDTO;
-import vn.dungmount.jobsite.domain.dto.ResultPaginationDTO;
+import vn.dungmount.jobsite.domain.response.ResCreateUserDTO;
+import vn.dungmount.jobsite.domain.response.ResUpdateUserDTO;
+import vn.dungmount.jobsite.domain.response.ResUserDTO;
+import vn.dungmount.jobsite.domain.response.ResultPaginationDTO;
 import vn.dungmount.jobsite.service.UserService;
 import vn.dungmount.jobsite.util.annotation.ApiMessage;
 import vn.dungmount.jobsite.util.error.IdInvalidException;

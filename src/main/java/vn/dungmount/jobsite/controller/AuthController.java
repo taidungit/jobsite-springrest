@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 import vn.dungmount.jobsite.domain.User;
-import vn.dungmount.jobsite.domain.dto.LoginDTO;
-import vn.dungmount.jobsite.domain.dto.ResLoginDTO;
+import vn.dungmount.jobsite.domain.request.LoginDTO;
+import vn.dungmount.jobsite.domain.response.ResLoginDTO;
 import vn.dungmount.jobsite.service.UserService;
 import vn.dungmount.jobsite.util.SecurityUtil;
 import vn.dungmount.jobsite.util.annotation.ApiMessage;

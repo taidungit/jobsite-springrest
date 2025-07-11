@@ -1,4 +1,4 @@
-package vn.dungmount.jobsite.domain.dto;
+package vn.dungmount.jobsite.domain.request;
 
 import jakarta.validation.constraints.NotBlank;
 

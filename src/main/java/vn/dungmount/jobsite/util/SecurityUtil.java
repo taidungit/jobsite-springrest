@@ -23,7 +23,7 @@ import org.springframework.stereotype.Service;
 
 import com.nimbusds.jose.util.Base64;
 
-import vn.dungmount.jobsite.domain.dto.ResLoginDTO;
+import vn.dungmount.jobsite.domain.response.ResLoginDTO;
 
 @Service
 public class SecurityUtil {

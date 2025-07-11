@@ -10,9 +10,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import vn.dungmount.jobsite.domain.Company;
-import vn.dungmount.jobsite.domain.dto.Meta;
-import vn.dungmount.jobsite.domain.dto.ResUserDTO;
-import vn.dungmount.jobsite.domain.dto.ResultPaginationDTO;
+import vn.dungmount.jobsite.domain.response.ResUserDTO;
+import vn.dungmount.jobsite.domain.response.ResultPaginationDTO;
 import vn.dungmount.jobsite.repository.CompanyRepository;
 
 @Service
@@ -34,7 +33,7 @@ public class CompanyService {
     }
     public ResultPaginationDTO getAllCompanies(Specification<Company> spec,Pageable page){
       Page<Company>pageCompany=this.companyRepository.findAll(spec,page);
-      Meta mt=new Meta();
+      ResultPaginationDTO.Meta mt=new ResultPaginationDTO.Meta();
       ResultPaginationDTO rs=new ResultPaginationDTO();
         mt.setPage(page.getPageNumber()+1);
         mt.setPageSize(page.getPageSize());

@@ -23,8 +23,8 @@
     import jakarta.validation.Valid;
     import vn.dungmount.jobsite.domain.Company;
     import vn.dungmount.jobsite.domain.User;
-    import vn.dungmount.jobsite.domain.dto.ResultPaginationDTO;
-    import vn.dungmount.jobsite.service.CompanyService;
+import vn.dungmount.jobsite.domain.response.ResultPaginationDTO;
+import vn.dungmount.jobsite.service.CompanyService;
 
     @RestController
     @RequestMapping("/api/v1")

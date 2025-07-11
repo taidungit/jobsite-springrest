@@ -10,11 +10,10 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import vn.dungmount.jobsite.domain.User;
-import vn.dungmount.jobsite.domain.dto.Meta;
-import vn.dungmount.jobsite.domain.dto.ResCreateUserDTO;
-import vn.dungmount.jobsite.domain.dto.ResUpdateUserDTO;
-import vn.dungmount.jobsite.domain.dto.ResUserDTO;
-import vn.dungmount.jobsite.domain.dto.ResultPaginationDTO;
+import vn.dungmount.jobsite.domain.response.ResCreateUserDTO;
+import vn.dungmount.jobsite.domain.response.ResUpdateUserDTO;
+import vn.dungmount.jobsite.domain.response.ResUserDTO;
+import vn.dungmount.jobsite.domain.response.ResultPaginationDTO;
 import vn.dungmount.jobsite.repository.UserRepository;
 
 @Service
@@ -40,7 +39,7 @@ public class UserService {
     public ResultPaginationDTO getAllUsers(Specification<User> spec,Pageable page){
         Page<User>pageUser=this.userRepository.findAll(spec,page);
         ResultPaginationDTO rs=new ResultPaginationDTO();
-        Meta mt=new Meta();
+        ResultPaginationDTO.Meta mt=new ResultPaginationDTO.Meta();
         mt.setPage(page.getPageNumber()+1);
         mt.setPageSize(page.getPageSize());
         mt.setPages(pageUser.getTotalPages());
