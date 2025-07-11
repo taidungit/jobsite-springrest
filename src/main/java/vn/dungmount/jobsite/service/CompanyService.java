@@ -2,13 +2,16 @@ package vn.dungmount.jobsite.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import vn.dungmount.jobsite.domain.Company;
 import vn.dungmount.jobsite.domain.dto.Meta;
+import vn.dungmount.jobsite.domain.dto.ResUserDTO;
 import vn.dungmount.jobsite.domain.dto.ResultPaginationDTO;
 import vn.dungmount.jobsite.repository.CompanyRepository;
 
@@ -29,15 +32,16 @@ public class CompanyService {
     public Company createCompany(Company company) {
       return this.companyRepository.save(company);
     }
-    public ResultPaginationDTO getAllCompanies(Pageable page){
-      Page<Company>pageCompany=this.companyRepository.findAll(page);
+    public ResultPaginationDTO getAllCompanies(Specification<Company> spec,Pageable page){
+      Page<Company>pageCompany=this.companyRepository.findAll(spec,page);
       Meta mt=new Meta();
       ResultPaginationDTO rs=new ResultPaginationDTO();
-        mt.setPage(pageCompany.getNumber());
-        mt.setPageSize(pageCompany.getSize());
+        mt.setPage(page.getPageNumber()+1);
+        mt.setPageSize(page.getPageSize());
         mt.setPages(pageCompany.getTotalPages());
         mt.setTotal(pageCompany.getTotalElements());
         rs.setMeta(mt);
+
         rs.setResult(pageCompany.getContent());
         return rs;
     }

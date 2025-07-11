@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,6 +33,7 @@ import vn.dungmount.jobsite.util.annotation.ApiMessage;
 import vn.dungmount.jobsite.util.error.IdInvalidException;
 
 @RestController
+@RequestMapping("/api/v1")
 public class UserController {
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
@@ -89,13 +91,12 @@ public class UserController {
     @PutMapping("/users")
     @ApiMessage("Update user")
     public ResponseEntity<ResUpdateUserDTO> updateUser(@RequestBody User user)throws IdInvalidException{
-        User user1= this.userService.getUserById(user.getId());
-        if(user1==null){
+        User user1= this.userService.updateUser(user);
+      
+          if(user1==null){
             throw new IdInvalidException("User không tồn tại!");
         }
-        User update=this.userService.updateUser(user);
-
-        return ResponseEntity.ok(this.userService.convertResUpdateUserDTO(update));
+        return ResponseEntity.ok(this.userService.convertResUpdateUserDTO(user1));
         
     }
 }

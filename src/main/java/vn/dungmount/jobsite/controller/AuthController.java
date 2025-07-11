@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
@@ -24,6 +25,7 @@ import vn.dungmount.jobsite.util.annotation.ApiMessage;
 import vn.dungmount.jobsite.util.error.IdInvalidException;
 
 @RestController
+@RequestMapping("/api/v1")
 public class AuthController {
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final SecurityUtil securityUtil;
@@ -80,17 +82,19 @@ Authentication authentication = authenticationManagerBuilder.getObject().authent
 
     @GetMapping("/auth/account")
     @ApiMessage("fetch account")
-    public ResponseEntity<ResLoginDTO.UserLogin> getAccount(){
+    public ResponseEntity<ResLoginDTO.UserGetAccount> getAccount(){
         String email=SecurityUtil.getCurrentUserLogin().isPresent()?SecurityUtil.getCurrentUserLogin().get():"";
         User currentUserDB=this.userService.getUserByEmail(email);
         ResLoginDTO.UserLogin res=new ResLoginDTO.UserLogin();
+        ResLoginDTO.UserGetAccount userGetAccount=new ResLoginDTO.UserGetAccount();
         if(currentUserDB!=null){
             res.setEmail(currentUserDB.getEmail());
             res.setId(currentUserDB.getId());
             res.setName(currentUserDB.getName());
+            userGetAccount.setUser(res);
         }
 
-        return ResponseEntity.ok().body(res);
+        return ResponseEntity.ok().body(userGetAccount);
     }
     @GetMapping("/auth/refresh")
     @ApiMessage("Get refresh token")
@@ -136,6 +140,26 @@ Authentication authentication = authenticationManagerBuilder.getObject().authent
         return ResponseEntity.ok()
         .header(HttpHeaders.SET_COOKIE, responseCookie.toString())
         .body(res);
+    }
+    @PostMapping("/auth/logout")
+    @ApiMessage("Log out user")
+    public ResponseEntity<Void>logOut() throws IdInvalidException  {
+        String email=SecurityUtil.getCurrentUserLogin().isPresent()?SecurityUtil.getCurrentUserLogin().get():"";
+        if(email.equals("")){
+            throw new IdInvalidException("Acess token không hơp lệ");
+        }
+        //update refresh token = null
+        this.userService.updateUserToken(null, email);
+        //remove refresh token
+        ResponseCookie deleteCookie= ResponseCookie.from("refresh_token",null)
+        .httpOnly(true)
+        .secure(true)
+        .path("/")
+        .maxAge(0)
+        .build();
+        return ResponseEntity.ok()
+        .header(HttpHeaders.SET_COOKIE, deleteCookie.toString())
+        .body(null);
     }
 }
 

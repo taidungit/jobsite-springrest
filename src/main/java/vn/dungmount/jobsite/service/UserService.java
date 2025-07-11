@@ -69,9 +69,8 @@ public class UserService {
             currentUser.setName(user.getName());
             currentUser.setAddress(user.getAddress());
             currentUser.setAge(user.getAge());
-            currentUser.setUpdatedAt(user.getUpdatedAt());
             currentUser.setGender(user.getGender());
-            this.userRepository.save(currentUser);
+            currentUser=this.userRepository.save(currentUser);
         }
         return currentUser;
     }
@@ -94,7 +93,6 @@ public class UserService {
     public ResUpdateUserDTO convertResUpdateUserDTO(User user){
         ResUpdateUserDTO userDTO=new ResUpdateUserDTO();
         userDTO.setId(user.getId());
-        // userDTO.setEmail(user.getEmail());
         userDTO.setAddress(user.getAddress());
         userDTO.setAge(user.getAge());
         userDTO.setGender(user.getGender());
@@ -107,6 +105,7 @@ public class UserService {
         ResUserDTO userDTO=new ResUserDTO();
         userDTO.setId(user.getId());
         userDTO.setAddress(user.getAddress());
+        userDTO.setEmail(user.getEmail());
         userDTO.setAge(user.getAge());
         userDTO.setGender(user.getGender());
         userDTO.setName(user.getName());

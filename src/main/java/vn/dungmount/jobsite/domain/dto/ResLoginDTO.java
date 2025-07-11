@@ -1,5 +1,7 @@
 package vn.dungmount.jobsite.domain.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,6 +10,7 @@ import lombok.Setter;
 @Setter
 @Getter
 public class ResLoginDTO {
+    @JsonProperty("access_token")
     private String accessToken;
     private String refreshToken;
     private UserLogin user;
@@ -15,10 +18,17 @@ public class ResLoginDTO {
     @Setter
     @AllArgsConstructor
     @NoArgsConstructor
-    static public class UserLogin {
+    public static class UserLogin {
         private Long id;
         private String email;
         private String name;
+    }
+    @Setter
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class UserGetAccount{
+        private UserLogin user;
     }
 
 }
