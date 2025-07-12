@@ -5,7 +5,7 @@ import java.time.Instant;
 
 import lombok.Getter;
 import lombok.Setter;
-import vn.dungmount.jobsite.util.constant.EnumGender;
+import vn.dungmount.jobsite.util.constant.GenderEnum;
 @Getter
 @Setter
 public class ResCreateUserDTO {
@@ -13,7 +13,7 @@ public class ResCreateUserDTO {
     private String name;
     private String email;
     int age;
-    private EnumGender gender;
+    private GenderEnum gender;
     private String address;
     private Instant createdAt;
     private CompanyUser company;

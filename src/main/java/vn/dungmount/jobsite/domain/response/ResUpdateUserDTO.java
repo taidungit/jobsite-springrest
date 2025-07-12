@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import vn.dungmount.jobsite.util.constant.EnumGender;
+import vn.dungmount.jobsite.util.constant.GenderEnum;
 @Getter
 @Setter
 public class ResUpdateUserDTO {
@@ -14,7 +14,7 @@ public class ResUpdateUserDTO {
     private String name;
     private String email;
     int age;
-    private EnumGender gender;
+    private GenderEnum gender;
     private String address;
     private Instant updatedAt;
     private CompanyUser company;

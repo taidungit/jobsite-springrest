@@ -19,7 +19,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 import vn.dungmount.jobsite.util.SecurityUtil;
-import vn.dungmount.jobsite.util.constant.EnumGender;
+import vn.dungmount.jobsite.util.constant.GenderEnum;
 
 @Table(name="users")
 @Entity
@@ -41,7 +41,7 @@ public class User {
     private String password;
     int age;
     @Enumerated(EnumType.STRING)
-    private EnumGender gender;
+    private GenderEnum gender;
     private String address;
     @Column(columnDefinition = "MEDIUMTEXT")
     private String refreshToken;
