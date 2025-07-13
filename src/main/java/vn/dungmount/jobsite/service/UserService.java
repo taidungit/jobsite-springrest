@@ -85,7 +85,7 @@ public class UserService {
             currentUser.setGender(user.getGender());
             if(user.getCompany()!=null){
             Optional<Company>optional=this.companyRepository.findById(user.getCompany().getId());
-            user.setCompany(optional.isPresent()?optional.get():null);
+            currentUser.setCompany(optional.isPresent()?optional.get():null);
         }
         currentUser=this.userRepository.save(currentUser);
 
@@ -118,7 +118,7 @@ public class UserService {
     public ResUpdateUserDTO convertResUpdateUserDTO(User user){
         ResUpdateUserDTO userDTO=new ResUpdateUserDTO();
         ResUpdateUserDTO.CompanyUser com = new ResUpdateUserDTO.CompanyUser();
-        if(userDTO.getCompany()!=null){
+        if(user.getCompany()!=null){
             com.setId(user.getCompany().getId());
             com.setName(user.getCompany().getName());
             userDTO.setCompany(com);

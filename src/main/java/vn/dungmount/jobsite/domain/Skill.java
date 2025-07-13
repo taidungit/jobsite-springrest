@@ -15,7 +15,9 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import vn.dungmount.jobsite.util.SecurityUtil;
 
@@ -23,6 +25,8 @@ import vn.dungmount.jobsite.util.SecurityUtil;
     @Table(name="skills")
     @Setter
     @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
 public class Skill {
     @Id 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,6 +53,10 @@ public class Skill {
     public void handleBeforeUpdate(){
         this.updatedBy= SecurityUtil.getCurrentUserLogin().isPresent()== true ?SecurityUtil.getCurrentUserLogin().get():"";
         this.updatedAt=Instant.now();
+    }
+    @Override
+    public String toString() {
+        return "Skill [name=" + name + "]";
     }
 
 

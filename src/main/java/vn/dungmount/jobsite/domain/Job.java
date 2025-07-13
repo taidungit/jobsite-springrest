@@ -20,7 +20,9 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import vn.dungmount.jobsite.util.SecurityUtil;
 import vn.dungmount.jobsite.util.constant.LevelEnum;
@@ -29,6 +31,8 @@ import vn.dungmount.jobsite.util.constant.LevelEnum;
     @Table(name="jobs")
     @Setter
     @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
 public class Job {
     @Id 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
