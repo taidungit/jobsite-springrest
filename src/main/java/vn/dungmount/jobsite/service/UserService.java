@@ -104,6 +104,7 @@ public class UserService {
         ResCreateUserDTO.CompanyUser com =new ResCreateUserDTO.CompanyUser();
         userDTO.setId(user.getId());
         userDTO.setAddress(user.getAddress());
+        userDTO.setEmail(user.getEmail());
         userDTO.setAge(user.getAge());
         userDTO.setGender(user.getGender());
         userDTO.setName(user.getName());

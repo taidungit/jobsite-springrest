@@ -15,8 +15,6 @@ import com.turkraft.springfilter.boot.Filter;
 
 import jakarta.validation.Valid;
 import vn.dungmount.jobsite.domain.Skill;
-import vn.dungmount.jobsite.domain.User;
-import vn.dungmount.jobsite.domain.response.ResUpdateUserDTO;
 import vn.dungmount.jobsite.domain.response.ResultPaginationDTO;
 import vn.dungmount.jobsite.service.SkillService;
 import vn.dungmount.jobsite.util.annotation.ApiMessage;

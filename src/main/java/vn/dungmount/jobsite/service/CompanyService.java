@@ -2,7 +2,6 @@ package vn.dungmount.jobsite.service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import vn.dungmount.jobsite.domain.Company;
 import vn.dungmount.jobsite.domain.User;
-import vn.dungmount.jobsite.domain.response.ResUserDTO;
 import vn.dungmount.jobsite.domain.response.ResultPaginationDTO;
 import vn.dungmount.jobsite.repository.CompanyRepository;
 import vn.dungmount.jobsite.repository.UserRepository;

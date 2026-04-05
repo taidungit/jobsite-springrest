@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,14 +31,16 @@ public class AuthController {
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final SecurityUtil securityUtil;
     private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
 
     @Value("${dungmount.jwt.refresh-token-validity-in-seconds}")
     private Long refreshTokenExpiration;
 
-    public AuthController(AuthenticationManagerBuilder authenticationManagerBuilder, SecurityUtil securityUtil,UserService userService) {
+    public AuthController(AuthenticationManagerBuilder authenticationManagerBuilder, SecurityUtil securityUtil,UserService userService, PasswordEncoder passwordEncoder) {
         this.authenticationManagerBuilder = authenticationManagerBuilder;
         this.securityUtil = securityUtil;
         this.userService=userService;
+        this.passwordEncoder = passwordEncoder;
     }
 
   
@@ -45,19 +48,15 @@ public class AuthController {
     @PostMapping("auth/login")
     public ResponseEntity<ResLoginDTO>login(@Valid @RequestBody LoginDTO loginDTO){
         //Nạp input gồm username/password vào Security
-
-
- UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword());
-
-//xác thực người dùng => cần viết hàm loadUserByUsername
-Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword());
+        //xác thực người dùng => cần viết hàm loadUserByUsername
+        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
         //create token
-    ResLoginDTO res=new ResLoginDTO();
-    User currentUserDB=this.userService.getUserByEmail(loginDTO.getUsername());
-    if(currentUserDB!=null){
-    ResLoginDTO.UserLogin u = new ResLoginDTO.UserLogin(currentUserDB.getId(),currentUserDB.getEmail(),currentUserDB.getName());
-    res.setUser(u);
-
+        ResLoginDTO res=new ResLoginDTO();
+        User currentUserDB=this.userService.getUserByEmail(loginDTO.getUsername());
+        if(currentUserDB!=null){
+        ResLoginDTO.UserLogin u = new ResLoginDTO.UserLogin(currentUserDB.getId(),currentUserDB.getEmail(),currentUserDB.getName());
+        res.setUser(u);
     }
     String accessToken=this.securityUtil.createAcessToken(authentication.getName(),res.getUser());
 

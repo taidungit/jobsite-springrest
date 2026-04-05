@@ -3,7 +3,6 @@ package vn.dungmount.jobsite.domain;
 import java.time.Instant;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
@@ -45,7 +44,7 @@ public class Company {
     @JsonIgnore
     private List<User>users;
 
-     @OneToMany(mappedBy = "company",fetch=FetchType.LAZY)
+    @OneToMany(mappedBy = "company",fetch=FetchType.LAZY)
     @JsonIgnore
     private List<Job>jobs;
 

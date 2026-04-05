@@ -1,9 +1,6 @@
     package vn.dungmount.jobsite.controller;
 
-    import java.util.List;
-    import java.util.Optional;
 
-    import org.springframework.data.domain.PageRequest;
     import org.springframework.data.domain.Pageable;
     import org.springframework.data.jpa.domain.Specification;
     import org.springframework.http.HttpStatus;
@@ -15,14 +12,12 @@
     import org.springframework.web.bind.annotation.PutMapping;
     import org.springframework.web.bind.annotation.RequestBody;
     import org.springframework.web.bind.annotation.RequestMapping;
-    import org.springframework.web.bind.annotation.RequestParam;
     import org.springframework.web.bind.annotation.RestController;
 
     import com.turkraft.springfilter.boot.Filter;
 
     import jakarta.validation.Valid;
     import vn.dungmount.jobsite.domain.Company;
-    import vn.dungmount.jobsite.domain.User;
 import vn.dungmount.jobsite.domain.response.ResultPaginationDTO;
 import vn.dungmount.jobsite.service.CompanyService;
 

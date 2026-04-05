@@ -1,6 +1,5 @@
 package vn.dungmount.jobsite.domain;
 
-import java.sql.Date;
 import java.time.Instant;
 
 import jakarta.persistence.Column;
