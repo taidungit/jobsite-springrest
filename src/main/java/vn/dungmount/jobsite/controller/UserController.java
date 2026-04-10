@@ -72,7 +72,7 @@ public class UserController {
         if(user==null){
             throw new IdInvalidException("User không tồn tại!");
         }
-       return ResponseEntity.ok(this.userService.convResUserDTO(user)); 
+       return ResponseEntity.ok(this.userService.convertToResUserDTO(user)); 
     }
     @GetMapping("/users")
     @ApiMessage("Fetch all users")

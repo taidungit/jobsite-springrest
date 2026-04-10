@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -31,7 +32,7 @@ public class AuthController {
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final SecurityUtil securityUtil;
     private final UserService userService;
-    private final PasswordEncoder passwordEncoder;
+    // private final PasswordEncoder passwordEncoder;
 
     @Value("${dungmount.jwt.refresh-token-validity-in-seconds}")
     private Long refreshTokenExpiration;
@@ -40,10 +41,8 @@ public class AuthController {
         this.authenticationManagerBuilder = authenticationManagerBuilder;
         this.securityUtil = securityUtil;
         this.userService=userService;
-        this.passwordEncoder = passwordEncoder;
+        // this.passwordEncoder = passwordEncoder;
     }
-
-  
 
     @PostMapping("auth/login")
     public ResponseEntity<ResLoginDTO>login(@Valid @RequestBody LoginDTO loginDTO){
@@ -51,14 +50,16 @@ public class AuthController {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword());
         //xác thực người dùng => cần viết hàm loadUserByUsername
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+        // set thông tin người dùng đăng nhập vào context (có thể sử dụng sau này)
+        SecurityContextHolder.getContext().setAuthentication(authentication);
         //create token
         ResLoginDTO res=new ResLoginDTO();
         User currentUserDB=this.userService.getUserByEmail(loginDTO.getUsername());
         if(currentUserDB!=null){
-        ResLoginDTO.UserLogin u = new ResLoginDTO.UserLogin(currentUserDB.getId(),currentUserDB.getEmail(),currentUserDB.getName());
+        ResLoginDTO.UserLogin u = new ResLoginDTO.UserLogin(currentUserDB.getId(),currentUserDB.getEmail(),currentUserDB.getName(),currentUserDB.getRole());
         res.setUser(u);
     }
-    String accessToken=this.securityUtil.createAcessToken(authentication.getName(),res.getUser());
+    String accessToken=this.securityUtil.createAcessToken(authentication.getName(),res);
 
     res.setAccessToken(accessToken);
     //create refresh token
@@ -90,7 +91,9 @@ public class AuthController {
             res.setEmail(currentUserDB.getEmail());
             res.setId(currentUserDB.getId());
             res.setName(currentUserDB.getName());
+            res.setRole(currentUserDB.getRole());
             userGetAccount.setUser(res);
+        
         }
 
         return ResponseEntity.ok().body(userGetAccount);
@@ -116,11 +119,11 @@ public class AuthController {
     ResLoginDTO res=new ResLoginDTO();
     User currentUserDB=this.userService.getUserByEmail(email);
     if(currentUserDB!=null){
-    ResLoginDTO.UserLogin u = new ResLoginDTO.UserLogin(currentUserDB.getId(),currentUserDB.getEmail(),currentUserDB.getName());
+    ResLoginDTO.UserLogin u = new ResLoginDTO.UserLogin(currentUserDB.getId(),currentUserDB.getEmail(),currentUserDB.getName(),currentUserDB.getRole());
     res.setUser(u);
 
     }
-    String accessToken=this.securityUtil.createAcessToken(email,res.getUser());
+    String accessToken=this.securityUtil.createAcessToken(email,res);
 
     res.setAccessToken(accessToken);
     //create refresh token

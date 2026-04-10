@@ -23,7 +23,7 @@ public class ResDetailResumeDTO {
 
     private String createdBy;
     private String updatedBy;
-
+    private String companyName;
     private UserResume user;
     private JobResume job;
 
