@@ -2,6 +2,7 @@ package vn.dungmount.jobsite.controller;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
 import vn.dungmount.jobsite.domain.User;
 import vn.dungmount.jobsite.domain.request.LoginDTO;
+import vn.dungmount.jobsite.domain.response.ResCreateUserDTO;
 import vn.dungmount.jobsite.domain.response.ResLoginDTO;
 import vn.dungmount.jobsite.service.UserService;
 import vn.dungmount.jobsite.util.SecurityUtil;
@@ -32,7 +34,7 @@ public class AuthController {
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final SecurityUtil securityUtil;
     private final UserService userService;
-    // private final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     @Value("${dungmount.jwt.refresh-token-validity-in-seconds}")
     private Long refreshTokenExpiration;
@@ -41,7 +43,7 @@ public class AuthController {
         this.authenticationManagerBuilder = authenticationManagerBuilder;
         this.securityUtil = securityUtil;
         this.userService=userService;
-        // this.passwordEncoder = passwordEncoder;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @PostMapping("auth/login")
@@ -162,6 +164,20 @@ public class AuthController {
         return ResponseEntity.ok()
         .header(HttpHeaders.SET_COOKIE, deleteCookie.toString())
         .body(null);
+    }
+
+    @PostMapping("/auth/register")
+    @ApiMessage("Register user")
+    public ResponseEntity<ResCreateUserDTO> register(@Valid @RequestBody User user) throws IdInvalidException {
+       boolean isExist=this.userService.isEmailExist(user.getEmail());
+         if(isExist){
+          throw new IdInvalidException("Email đã tồn tại");
+         }
+         String hashPassword=this.passwordEncoder.encode(user.getPassword());
+         user.setPassword(hashPassword);
+         User createdUser=this.userService.createUser(user);
+
+         return ResponseEntity.status(HttpStatus.CREATED).body(this.userService.convertResCreateUserDTO(createdUser));
     }
 }
 

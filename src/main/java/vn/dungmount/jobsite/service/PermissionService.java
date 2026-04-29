@@ -1,6 +1,9 @@
 package vn.dungmount.jobsite.service;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -44,5 +47,13 @@ public ResultPaginationDTO getAllPermissions(Specification<Permission> spec, Pag
         this.permissionRepository.deleteRelationByPermissionId(id);
         this.permissionRepository.deleteById(id);
     }
+
+public boolean isSameName(Permission permission) {
+    Optional<Permission> permissionDb = permissionRepository.findById(permission.getId());
+    if (permissionDb.isPresent()) {
+        return Objects.equals(permissionDb.get().getName(), permission.getName());
+    }
+    return false;
+}
 
 }

@@ -21,6 +21,7 @@ import vn.dungmount.jobsite.domain.Role;
 import vn.dungmount.jobsite.domain.response.ResultPaginationDTO;
 import vn.dungmount.jobsite.repository.RoleRepository;
 import vn.dungmount.jobsite.service.RoleService;
+import vn.dungmount.jobsite.util.annotation.ApiMessage;
 import vn.dungmount.jobsite.util.error.IdInvalidException;
 
 @Controller
@@ -64,5 +65,15 @@ public class RoleController {
         }
         this.roleRepository.deleteById(id);
         return ResponseEntity.ok().body(null);
+    }
+
+    @GetMapping("/roles/{id}")
+    @ApiMessage("Get role by id")
+    public ResponseEntity<Role> getRoleById(@PathVariable Long id) throws IdInvalidException {
+        Role role = this.roleService.findById(id);
+        if (role == null) {
+            throw new IdInvalidException("Role không tồn tại!");
+        }
+        return ResponseEntity.ok().body(role);
     }
 }

@@ -50,7 +50,9 @@ public class PermissionController {
          boolean isExists = permissionRepository.existsByApiPathAndMethodAndModule(
                 permission.getApiPath(), permission.getMethod(), permission.getModule());
         if (isExists) {
-            throw new IdInvalidException("Permission với apiPath, method và module này đã tồn tại ở một bản ghi khác!");
+            if(!this.permissionService.isSameName(permission)){
+                throw new IdInvalidException("Permission với apiPath, method và module này đã tồn tại ở một bản ghi khác!");
+            }
         }
         Permission updatedPermission = this.permissionService.update(currentPermission);
         return ResponseEntity.ok(updatedPermission);

@@ -67,7 +67,7 @@ public class JobController {
 
     @GetMapping("/jobs/{id}")
     @ApiMessage("Get a job by id")
-    public ResponseEntity<Job> getJobById( @PathVariable Long id)throws IdInvalidException{
+    public ResponseEntity<Job> getJobById( @PathVariable("id") Long id)throws IdInvalidException{
         Optional<Job> currentJob=this.jobService.fetchJobById(id);
         if(!currentJob.isPresent()){
             throw new IdInvalidException("Khong tim thay job ");

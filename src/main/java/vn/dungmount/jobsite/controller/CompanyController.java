@@ -52,7 +52,7 @@ import vn.dungmount.jobsite.service.CompanyService;
             return ResponseEntity.ok().build();
         }
         @GetMapping("/companies/{id}")
-        public ResponseEntity<Company>getCompanyById(@PathVariable Long id){
+        public ResponseEntity<Company>getCompanyById(@PathVariable("id") Long id){
             Company company=this.companyService.getCompanyById(id);
             return ResponseEntity.ok(company);
         }
