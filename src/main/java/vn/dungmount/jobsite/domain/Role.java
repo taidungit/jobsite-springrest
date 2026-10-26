@@ -45,7 +45,6 @@ public class Role {
     private String updatedBy;
     
     @ManyToMany(fetch = FetchType.LAZY)
-    @JsonIgnore
     @JoinTable(
         name = "permission_role", 
         joinColumns = @JoinColumn(name = "role_id"), 

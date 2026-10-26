@@ -7,4 +7,5 @@ import vn.dungmount.jobsite.domain.Role;
 public interface RoleRepository extends JpaRepository<Role,Long>,JpaSpecificationExecutor<Role>{
     boolean existsByName(String name);
     boolean existsByNameAndIdNot(String name, long id);
+    Role findByName(String name);
 }
