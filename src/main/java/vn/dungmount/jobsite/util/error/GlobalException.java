@@ -70,5 +70,16 @@ public ResponseEntity<RestResponse<Object>> handleNotFound(NoResourceFoundExcept
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
     }
 
+
+@ExceptionHandler(value = {
+    PermissionException.class,
+})
+    public ResponseEntity<RestResponse<Object>> handlePermissionException(Exception ex) {
+    RestResponse<Object> res = new RestResponse<Object>();
+    res.setStatusCode(HttpStatus.FORBIDDEN.value());
+    res.setMessage("Forbidden");
+    res.setError(ex.getMessage());
+    return ResponseEntity.status(HttpStatus.FORBIDDEN).body(res);
+}
 }
 
