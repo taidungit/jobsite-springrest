@@ -66,7 +66,7 @@ public class PermissionController {
     }
 
     @DeleteMapping("/permissions/{id}")
-    public ResponseEntity<Void> deletePermission(@PathVariable Long id) throws IdInvalidException {
+    public ResponseEntity<Void> deletePermission(@PathVariable("id") Long id) throws IdInvalidException {
         Optional<Permission> permissionOptional = this.permissionRepository.findById(id);
         if (permissionOptional.isEmpty()) {
             throw new IdInvalidException("Permission không tồn tại để xóa!");

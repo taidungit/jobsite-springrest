@@ -58,7 +58,7 @@ public class RoleController {
 }
 
     @DeleteMapping("/roles/{id}")
-    public ResponseEntity<Void> deleteRole(@PathVariable Long id) throws Exception {
+    public ResponseEntity<Void> deleteRole(@PathVariable("id") Long id) throws Exception {
         Optional<Role> roleOptional = this.roleRepository.findById(id);
         if (roleOptional.isEmpty()) {
             throw new IdInvalidException("Role không tồn tại để xóa!");
@@ -69,7 +69,7 @@ public class RoleController {
 
     @GetMapping("/roles/{id}")
     @ApiMessage("Get role by id")
-    public ResponseEntity<Role> getRoleById(@PathVariable Long id) throws IdInvalidException {
+    public ResponseEntity<Role> getRoleById(@PathVariable("id") Long id) throws IdInvalidException {
         Role role = this.roleService.findById(id);
         if (role == null) {
             throw new IdInvalidException("Role không tồn tại!");
