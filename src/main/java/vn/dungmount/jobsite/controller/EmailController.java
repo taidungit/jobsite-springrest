@@ -1,9 +1,11 @@
 package vn.dungmount.jobsite.controller;
 
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.transaction.Transactional;
 import vn.dungmount.jobsite.service.EmailService;
 import vn.dungmount.jobsite.service.SubscriberService;
 import vn.dungmount.jobsite.util.annotation.ApiMessage;
@@ -22,8 +24,10 @@ public class EmailController {
         this.subscriberService = subscriberService;
     }
 
-    @GetMapping("/email")
-    @ApiMessage ("Send simple email")
+    // @GetMapping("/email")
+    // @ApiMessage ("Send simple email")
+    // @Scheduled (cron = "*/30 * * * * *")
+    @Transactional 
     public String sendSimpleEmail() {
         this.subscriberService.sendSubscribersEmailJobs();
         return "ok";
