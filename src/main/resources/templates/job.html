@@ -1,0 +1,285 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dung Mount - Job Recommendations</title>
+</head>
+
+<body style="
+    margin: 0;
+    padding: 0;
+    background-color: #f3f5f9;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #1e293b;
+">
+
+<table width="100%" cellpadding="0" cellspacing="0" border="0"
+       style="background-color: #f3f5f9; padding: 30px 10px;">
+
+    <tr>
+        <td align="center">
+
+            <!-- Main Container -->
+            <table width="600" cellpadding="0" cellspacing="0" border="0"
+                   style="
+                       max-width: 600px;
+                       width: 100%;
+                       background-color: #ffffff;
+                       border-radius: 12px;
+                       overflow: hidden;
+                   ">
+
+                <!-- Header -->
+                <tr>
+                    <td style="padding: 30px 35px 25px 35px;">
+
+                        <table width="100%" cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td align="left">
+                                    <div style="
+                                        font-size: 27px;
+                                        font-weight: bold;
+                                        color: #172554;
+                                    ">
+                                        <span style="color: #16a36a;">◆</span>
+                                        Dung Mount
+                                    </div>
+                                    <div style="
+                                        font-size: 12px;
+                                        color: #94a3b8;
+                                        margin-top: 5px;
+                                    ">
+                                        YOUR CAREER OPPORTUNITY
+                                    </div>
+                                </td>
+
+                                <td align="right" valign="middle">
+                                    <div style="
+                                        font-size: 14px;
+                                        color: #64748b;
+                                        line-height: 22px;
+                                    ">
+                                        Discover your<br>
+                                        next opportunity.
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+
+                    </td>
+                </tr>
+
+                <!-- Green Divider -->
+                <tr>
+                    <td style="
+                        height: 4px;
+                        background-color: #16a36a;
+                    "></td>
+                </tr>
+
+                <!-- Greeting -->
+                <tr>
+                    <td style="padding: 35px 35px 25px 35px;">
+
+                        <div style="
+                            font-size: 24px;
+                            font-weight: bold;
+                            color: #172554;
+                            margin-bottom: 12px;
+                        ">
+                            Hi Tai Dung,
+                        </div>
+
+                        <div style="
+                            font-size: 15px;
+                            color: #64748b;
+                            line-height: 25px;
+                        ">
+                            We have found some job opportunities
+                            that might be a great match for you.
+                            Take a look at our latest recommendations!
+                        </div>
+
+                    </td>
+                </tr>
+
+
+                <!-- Recommended Jobs -->
+                <tr>
+                    <td style="padding: 0 35px 15px 35px;">
+                        <div style="
+                            font-size: 17px;
+                            font-weight: bold;
+                            color: #172554;
+                        ">
+                            Recommended Jobs
+                        </div>
+                    </td>
+                </tr>
+
+                <!-- Dynamic Job List -->
+                <tr th:each="job : ${jobs}">
+                    <td style="padding: 0 35px 15px 35px;">
+
+                        <table width="100%" cellpadding="0" cellspacing="0"
+                            style="
+                                border: 1px solid #e2e8f0;
+                                border-radius: 8px;
+                                background-color: #ffffff;
+                            ">
+
+                            <tr>
+                                <td style="padding: 20px;">
+
+                                    <!-- Job Name -->
+                                    <div style="
+                                        font-size: 17px;
+                                        font-weight: bold;
+                                        color: #172554;
+                                        margin-bottom: 10px;
+                                    ">
+                                        <span th:text="${job.name}">
+                                            Job Name
+                                        </span>
+                                    </div>
+
+                                    <!-- Company -->
+                                    <div style="
+                                        font-size: 14px;
+                                        color: #64748b;
+                                        margin-bottom: 8px;
+                                    ">
+                                        🏢
+                                        <span th:text="${job.company.name}">
+                                            Company Name
+                                        </span>
+                                    </div>
+
+                                    <!-- Salary -->
+                                 <div style="
+                                        font-size: 14px;
+                                        color: #16a36a;
+                                        font-weight: bold;
+                                        margin-bottom: 15px;
+                                    ">
+                                        <span th:text="${#numbers.formatDecimal(job.salary, 0, 'POINT', 0, 'COMMA')}">
+                                            Salary
+                                        </span> VND
+                                    </div>  
+
+                                    <!-- Location -->
+                                    <div style="
+                                        font-size: 13px;
+                                        color: #64748b;
+                                        margin-bottom: 15px;
+                                    ">
+                                        📍
+                                        <span th:text="${job.location}">
+                                            Location
+                                        </span>
+                                    </div>
+
+                                    <!-- Skills -->
+                                    <div>
+                                        <span th:each="skill : ${job.skills}"
+                                            th:text="${skill.name}"
+                                            style="
+                                                display: inline-block;
+                                                background-color: #f1f5f9;
+                                                color: #475569;
+                                                padding: 6px 12px;
+                                                border-radius: 20px;
+                                                font-size: 12px;
+                                                margin-right: 5px;
+                                                margin-bottom: 5px;
+                                            ">
+                                            Java
+                                        </span>
+                                    </div>
+
+                                </td>
+                            </tr>
+
+                        </table>
+
+                    </td>
+                </tr>
+
+                <!-- Empty Job List -->
+                <tr th:if="${#lists.isEmpty(jobs)}">
+                    <td style="padding: 20px 35px; text-align: center; color: #64748b;">
+                        There are currently no available jobs.
+                    </td>
+                </tr>
+
+                <!-- CTA Button -->
+                <tr>
+                    <td align="center" style="padding: 5px 35px 35px 35px;">
+
+                        <a href="https://www.topcv.vn/"
+                           target="_blank"
+                           style="
+                               display: inline-block;
+                               background-color: #e92332;
+                               color: #ffffff;
+                               text-decoration: none;
+                               font-size: 15px;
+                               font-weight: bold;
+                               padding: 15px 35px;
+                               border-radius: 6px;
+                           ">
+                            Explore More Jobs →
+                        </a>
+
+                    </td>
+                </tr>
+
+                <!-- Footer -->
+                <tr>
+                    <td style="
+                        background-color: #f8fafc;
+                        border-top: 1px solid #e2e8f0;
+                        padding: 25px 35px;
+                        text-align: center;
+                    ">
+
+                        <div style="
+                            font-size: 19px;
+                            font-weight: bold;
+                            color: #172554;
+                            margin-bottom: 8px;
+                        ">
+                            Dung <span style="color: #16a36a;">Mount</span>
+                        </div>
+
+                        <div style="
+                            font-size: 12px;
+                            color: #94a3b8;
+                            line-height: 20px;
+                        ">
+                            Discover opportunities. Build your future.
+                        </div>
+
+                        <div style="
+                            font-size: 11px;
+                            color: #cbd5e1;
+                            margin-top: 15px;
+                        ">
+                            © 2026 Dung Mount. All rights reserved.
+                        </div>
+
+                    </td>
+                </tr>
+
+            </table>
+            <!-- End Main Container -->
+
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>

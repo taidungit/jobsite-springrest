@@ -39,10 +39,13 @@ public class SecurityConfiguration {
     }
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http,CustomAuthenticationEntryPoint caep) throws Exception {
+        System.out.println(">>> SECURITY CONFIG INITIALIZED");
          String[] whiteList = {
                 "/",
                 "/api/v1/auth/login", "/api/v1/auth/refresh", "/storage/**",
-                "/api/v1/auth/register"
+                "/api/v1/auth/register",
+                "/api/v1/email/**",
+                "/api/v1/subscribers"
         };
         http
         .csrf(c->c.disable())    
